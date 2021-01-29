@@ -1,0 +1,2 @@
+# Intercosmic
+intercosmic is a videogame i'm trying to make in the Unreal Engine. because C++ is hard to develop in, i've been developing some of the game mechanics and mathematics in python before implementing it in the engine. i've put it here just in case if anyone's interested
