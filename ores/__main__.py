@@ -69,21 +69,32 @@ def generate_ore_vein(spherical):
 		))
 	return points
 
-def plot_ore_vein():
+def generate_asteroid():
+	fig = plt.figure()
+	ax = plt.axes(projection='3d')
+
+	maximum = 15 # max amount of ore clusters
+	minimum = 5 # min amount of ore clusters
+	count = int((random.random() ** 2) * (maximum - minimum) + minimum)
+	for i in range(count):
+		plot_ore_vein(ax)
+
+	draw_sphere(ax, 0.95)
+	plt.show()
+
+def plot_ore_vein(ax):
 	points = [spherical_to_cartesian(point) for point in generate_ore_vein(pick_point()[1])]
 	x = [point[0] for point in points]
 	y = [point[1] for point in points]
 	z = [point[2] for point in points]
 	ax.scatter3D(x, y, z)
 
-# test ore count per vein distribution
-def test():
-	maximum = 35
-	minimum = 10
+# test different distributions
+def test(minimum, maximum, power):
 	dictionary = {}
 	total = 100000
 	for i in range(0, total):
-		count = int((random.random() ** 2) * (maximum - minimum) + minimum) # make higher counts rarer by power of 2
+		count = int((random.random() ** power) * (maximum - minimum) + minimum) # make higher counts rarer by power of 2
 		if count not in dictionary:
 			dictionary[count] = 0
 
@@ -91,11 +102,11 @@ def test():
 	
 	area_under_curve = 0
 	area_under_curve_dictionary = {}
-	for i in range(10, 35):
+	for i in range(minimum, maximum):
 		percent = int(dictionary[i] / total * 100)
 		area_under_curve = area_under_curve + dictionary[i] / total * 100
 
-		key = int((i - 10) / 5)
+		key = int((i - minimum) / 5)
 		if key not in area_under_curve_dictionary:
 			area_under_curve_dictionary[key] = 0
 
@@ -109,16 +120,10 @@ def test():
 
 		last = value
 
-# test()
+# test ore count per vein distribution
+# test(10, 35, 2)
 
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-
-for i in range(10):
-	plot_ore_vein()
-
-draw_sphere(ax, 0.95)
-plt.show()
+generate_asteroid()
 
 # 10-15: 38.51%
 # 16-20: 19.26%
